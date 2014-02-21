@@ -353,31 +353,6 @@ class AliasedDatabaseTeardownTest(unittest.TestCase):
             db.connections = old_db_connections
 
 
-class DeprecationDisplayTest(AdminScriptTestCase):
-    # tests for 19546
-    def setUp(self):
-        settings = {
-            'DATABASES': '{"default": {"ENGINE":"django.db.backends.sqlite3", "NAME":":memory:"}}'
-        }
-        self.write_settings('settings.py', sdict=settings)
-
-    def tearDown(self):
-        self.remove_settings('settings.py')
-
-    def test_runner_deprecation_verbosity_default(self):
-        args = ['test', '--settings=test_project.settings', 'test_runner_deprecation_app']
-        out, err = self.run_django_admin(args)
-        self.assertIn("Ran 1 test", err)
-        self.assertIn("DeprecationWarning: warning from test", err)
-        self.assertIn("DeprecationWarning: module-level warning from deprecation_app", err)
-
-    def test_runner_deprecation_verbosity_zero(self):
-        args = ['test', '--settings=test_project.settings', '--verbosity=0', 'test_runner_deprecation_app']
-        out, err = self.run_django_admin(args)
-        self.assertIn("Ran 1 test", err)
-        self.assertFalse("DeprecationWarning: warning from test" in err)
-
-
 class AutoIncrementResetTest(TransactionTestCase):
     """
     Here we test creating the same model two times in different test methods,

@@ -27,3 +27,9 @@ SECRET_KEY = "django_tests_secret_key"
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
+
+# Adds xunit reporting
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_VERBOSE = True
+TEST_OUTPUT_DESCRIPTIONS = True
+TEST_OUTPUT_DIR = 'xmlrunner'

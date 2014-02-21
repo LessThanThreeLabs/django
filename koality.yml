@@ -1,0 +1,23 @@
+languages:
+  python: 2.7
+setup:
+ - packages:
+   - pip:
+     - unittest-xml-reporting
+test:
+  machines: 10
+  factories:
+  - test factory:
+      script:
+      - |
+        cd tests
+        directories=$(find * -maxdepth 0 -type d -print)
+        for package in $directories; do
+          echo $package | grep -qvE "^(requirements|templates|test_discovery_sample.*|test_runner_.*)$" || continue
+          echo "- $package:"
+          echo "    path: tests"
+          echo "    script:"
+          echo "    - rm -rf xmlrunner"
+          echo "    - PYTHONPATH=.. python ./runtests.py $package"
+          echo "    xunit: xmlrunner"
+        done
